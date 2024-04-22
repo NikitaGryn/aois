@@ -53,8 +53,8 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(float_number, '01000001101111000000000000000000')
 
     def test_sum_float_number(self):
-        summ_float = add_float32(7.125, 18.5)
-        self.assertEqual(summ_float, '0100000111001101000000000000000')
+        summ_float = sum_float(7.125, 18.5)
+        self.assertEqual(summ_float, '01000001110011010000000000000000')
 
 
 if __name__ == '__main__':

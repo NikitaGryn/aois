@@ -69,8 +69,8 @@ def main():
     binary_representation2 = float_to_bin32(number4)
     print("Бинарное представление (IEEE-754-2008):", binary_representation2)
 
-    summ_float = add_float32(number3, number4)
-    print("Сумма:", summ_float, 'число:', number3 + number4)
+    sum_float_number = sum_float(number3, number4)
+    print("Сумма:", sum_float_number, 'число:', number3 + number4)
 
 
 if __name__ == "__main__":

@@ -174,54 +174,42 @@ def float_to_bin32(num):
     return sign_bit + exponent_bits + fraction_bits
 
 
-def number_to_binary_for_float(num):
-    binary = ""
-    for _ in range(8):
-        binary = str(num % 2) + binary
-        num //= 2
-    return binary
+def sum_float(num1, num2):
+    num1 = float_to_bin32(num1)
+    num2 = float_to_bin32(num2)
 
+    exponent_number1 = binary_to_number(num1[1:9])
+    exponent_number2 = binary_to_number(num2[1:9])
+    mantissa_number1 = "1" + num1[9:]
+    mantissa_number2 = "1" + num2[9:]
 
-def add_float32(num1, num2):
-    float_bin1 = float_to_bin32(num1)
-    float_bin2 = float_to_bin32(num2)
+    while exponent_number1 < exponent_number2:
+        mantissa_number1 = "0" + mantissa_number1[:-1]
+        exponent_number1 += 1
+    while exponent_number2 < exponent_number1:
+        mantissa_number2 = "0" + mantissa_number2[:-1]
+        exponent_number2 += 1
 
-    sign1 = float_bin1[0]
-    sign2 = float_bin2[0]
-    exponent1 = float_bin1[1:9]
-    exponent2 = float_bin2[1:9]
-    mantissa1 = float_bin1[9:]
-    mantissa2 = float_bin2[9:]
-
-    exp_diff1 = abs(binary_to_number(exponent1) - 127)
-    exp_diff2 = abs(binary_to_number(exponent2) - 127)
-
-    mantissa1_normalized = '1' + mantissa1
-    mantissa2_normalized = '1' + mantissa2
-
-    max_exp_diff = max(exp_diff1, exp_diff2)
-
-    if exp_diff1 < exp_diff2:
-        mantissa1_normalized = '0' * (exp_diff2 - exp_diff1) + mantissa1_normalized
-    if exp_diff2 < exp_diff1:
-        mantissa2_normalized = '0' * (exp_diff1 - exp_diff2) + mantissa2_normalized
-
-    mantissa1_normalized = mantissa1_normalized[:23]
-    mantissa2_normalized = mantissa2_normalized[:23]
-    mantissa_sum = []
     carry = 0
-    for digit1, digit2 in zip(reversed(mantissa1_normalized), reversed(mantissa2_normalized)):
-        sum_bits = [int(digit1)] + [int(digit2)] + [carry]
-        sum_value = sum(sum_bits)
-        mantissa_sum.insert(0, str(sum_value % 2))
-        carry = sum_value // 2
+    sum_mantiss = ""
+    for i in range(23, -1, -1):
+        bit1 = int(mantissa_number1[i])
+        bit2 = int(mantissa_number2[i])
+        total = bit1 + bit2 + carry
+        sum_mantiss = str(total % 2) + sum_mantiss
+        carry = total // 2
 
-    mantissa_sum_str = ''.join(mantissa_sum)
+    if carry:
+        sum_mantiss = "1" + sum_mantiss[:-1]
+        exponent_number1 += 1
 
-    mantissa_sum_str = mantissa_sum_str[1:]
+    exponent = ""
+    for _ in range(8):
+        exponent = str(exponent_number1 % 2) + exponent
+        exponent_number1 //= 2
 
-    new_exponent_bin = number_to_binary_for_float(127 + max_exp_diff)
+    exponent = exponent.rjust(8, '0')
 
-    result_sign = '1' if sign1 == '1' or sign2 == '1' else '0'
-    result = result_sign + new_exponent_bin + mantissa_sum_str
-    return result
+    result_sum = num1[0] + exponent + sum_mantiss[1:]
+
+    return result_sum
