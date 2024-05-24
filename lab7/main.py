@@ -1,0 +1,31 @@
+from Matrix import Matrix
+
+if __name__ == "__main__":
+    m = Matrix()
+
+    m.set_word(0, "0100011000101000")
+    m.set_word(1, "0100000100101000")
+    m.set_word(2, "0010000100101000")
+    m.set_word(3, "0001011100101000")
+    m.set_word(4, "0100011100101000")
+    m.set_word(5, "0101011100101000")
+    m.set_word(6, "0000011100101000")
+    m.set_word(7, "0101110100101000")
+    m.set_word(8, "0001011000100000")
+    m.set_word(9, "0100111100101000")
+    m.set_word(10, "0100011100101000")
+    m.set_word(11, "0001111100101000")
+    m.set_word(12, "0100011100101000")
+    m.set_word(13, "0001011100101000")
+    m.set_word(14, "0000111100101000")
+    m.set_word(15, "0100011100101000")
+
+    m.print()
+    print('-----------')
+    m.conj(0, 1, 2)
+    m.print()
+    print('-----------')
+    m.sheffers_op(0, 1, 3)
+    m.print()
+    print(m.get_word(0))
+    print(m.get_diag(3))
